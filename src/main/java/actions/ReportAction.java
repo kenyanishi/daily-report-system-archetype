@@ -236,4 +236,21 @@ public class ReportAction extends ActionBase {
             }
         }
     }
+    /**   //追加
+     * いいねする
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void likeCount() throws ServletException, IOException {
+        //idを条件に日報データを取得する
+        ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+        //いいね数を１加算し、設定する
+        rv.setLikeCount(rv.getLikeCount() + 1);
+        //日報データを更新する
+        service.update(rv);
+        //セッションに更新完了のフラッシュメッセージを設定
+        putSessionScope(AttributeConst.FLUSH, MessageConst.I_LIKE_COUNT.getMessage());
+        //一覧画面にリダイレクト
+        redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
+    }
 }
